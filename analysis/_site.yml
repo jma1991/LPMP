@@ -1,17 +1,29 @@
-name: "LPMP"
+name: "LPMP Analysis"
 output_dir: ../docs
 navbar:
-  title: "LPMP"
+  title: "LPMP Analysis"
   left:
   - text: Home
     href: index.html
   - text: About
     href: about.html
-  - text: License
-    href: license.html
+  - text: Processing
+    menu:
+      - text: Quality control
+  - text: Analysis
+    menu:
+      - text: Atlas integration
+  - text: Interactive
+    href: interactive.html
+  right:
+    - text: License
+    - href: license.html
+    - icon: fa-github
+      href: https://github.com/jma1991/LPMP
 output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
     theme: cosmo
     highlight: textmate
+    df_print: paged
