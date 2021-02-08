@@ -17,7 +17,6 @@ Setup chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.lazy = FALSE,
   cache.path = "cache/01-batch-integration/",
   dev        = "png",
   error      = FALSE,
@@ -33,7 +32,6 @@ Load Bioconductor packages:
 ```{r}
 library(batchelor)
 library(EnsDb.Mmusculus.v79)
-library(org.Mm.eg.db)
 library(scater)
 library(scran)
 library(scuttle)
@@ -54,7 +52,6 @@ Read experiment objects:
 
 ```{r}
 sce <- list(
-  NMP_EHF = readRDS("data/NMP_EHF.rds"),
   LPMP_EHF = readRDS("data/LPMP_EHF.rds"),
   LPMP_LHF = readRDS("data/LPMP_LHF.rds")
 )
@@ -82,14 +79,14 @@ cleanSCE <- function(x) {
   rowRanges(x) <- relist(GRanges(), PartitioningByEnd(integer(length(x)), names = rownames(x)))
 
   # Clear colnames
-  colnames(x) <- NULL
+  colnames(x) <- x$sample
+  
+  # Replace colData
+  colData(x)$cluster <- paste(x$region, x$stage, x$cluster, sep = "_")
 
   # Clear reducedDims
   reducedDims(x) <- NULL
   
-  # Cleart altExp
-  altExp(x) <- NULL
-
   # Return object
   return(x)
 
@@ -115,7 +112,7 @@ sce <- lapply(sce, "[", i = ids)
 Model the per-gene variance:
 
 ```{r}
-dec <- lapply(sce, modelGeneVar)
+dec <- lapply(sce, modelGeneVarWithSpikes, "ERCC")
 ```
 
 Combine variance decompositions:
@@ -139,7 +136,7 @@ Identify highly variable genes:
 ```{r}
 hvg <- subset(dec, blacklist == FALSE)
 
-hvg <- getTopHVGs(hvg, var.field = "bio", var.threshold = 0, fdr.field = "p.value", fdr.threshold = "0.05")
+hvg <- getTopHVGs(dec, var.field = "bio", var.threshold = 0, fdr.field = "FDR", fdr.threshold = 0.05)
 ```
 
 ### Batch normalization
@@ -155,7 +152,7 @@ sce <- multiBatchNorm(sce)
 Correct experiments using nearest neighbours:
 
 ```{r}
-set.seed(0010101111)
+set.seed(0111110100)
 
 mnn <- correctExperiments(
   sce,
@@ -180,11 +177,9 @@ metadata(mnn)$getTopHVGs <- hvg
 Replace rowData slot:
 
 ```{r}
-rowData(mnn) <- DataFrame(
-  gene_id = rownames(mnn),
-  gene_name = mapIds(EnsDb.Mmusculus.v79, keys = rownames(mnn), column = "GENENAME", keytype = "GENEID"),
-  rotation = I(rowData(mnn)$rotation)
-)
+rowData(mnn)$gene_id <- rownames(mnn)
+
+rowData(mnn)$gene_name <- mapIds(EnsDb.Mmusculus.v79, keys = rownames(mnn), column = "GENENAME", keytype = "GENEID")
 ```
 
 ## Diagnostics
@@ -224,17 +219,17 @@ pheatmap(tab, color = col, display_numbers = TRUE, number_format = "%d", cluster
 Perform TSNE on the corrected PCA matrix:
 
 ```{r}
-set.seed(0000011101)
+set.seed(1111100110)
 
 mnn <- runTSNE(mnn, dimred = "corrected")
 ```
 
 Visualize the corrected PCA using a TSNE plot:
 
-```{r fig.width = 8, fig.height = 4}
-ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) +
+```{r}
+ggcells(mnn, aes(TSNE.1, TSNE.2, colour = cluster)) +
   geom_point(size = 1, show.legend = FALSE) +
-  scale_colour_manual(values = MouseGastrulationData::EmbryoCelltypeColours, na.value = "#000000") +
+  scale_colour_brewer(palette = "Set1") + 
   labs(x = "TSNE 1", y = "TSNE 2") +
   facet_wrap(~ batch) +
   theme_no_axes() + 
@@ -244,17 +239,17 @@ ggcells(mnn, aes(TSNE.1, TSNE.2, colour = celltype)) +
 Perform UMAP on the corrected PCA matrix:
 
 ```{r}
-set.seed(0101111011)
+set.seed(1001010111)
 
 mnn <- runUMAP(mnn, dimred = "corrected")
 ```
 
 Visualize the corrected PCA using a UMAP plot:
 
-```{r fig.width = 8, fig.height = 4}
-ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) +
+```{r}
+ggcells(mnn, aes(UMAP.1, UMAP.2, colour = cluster)) +
   geom_point(size = 1, show.legend = FALSE) +
-  scale_colour_manual(values = MouseGastrulationData::EmbryoCelltypeColours, na.value = "#000000") +
+  scale_colour_brewer(palette = "Set1") +
   labs(x = "UMAP 1", y = "UMAP 2") +
   facet_wrap(~ batch) +
   theme_no_axes() + 
@@ -265,7 +260,7 @@ ggcells(mnn, aes(UMAP.1, UMAP.2, colour = celltype)) +
 
 ### Output
 
-Save integrated experiment object to disk:
+Save experiment object to disk:
 
 ```{r}
 saveRDS(mnn, file = "output/01-batch-integration.rds")
