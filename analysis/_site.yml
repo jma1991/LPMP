@@ -7,14 +7,16 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
-    - text: "Analysis"
+    - text: "Processing"
       menu:
         - text: "Batch integration"
           href: 01-batch-integration.html
-        - text: "Atlas integration"
-          href: 02-atlas-integration.html
-        - text: "Human integration"
-          href: 03-human-integration.html
+        - text: "Dimensionality reduction"
+          href: 02-reduced-dimensions.html
+        - text: "Clustering"
+          href: 03-clustering.html
+        - text: "Marker detection"
+          href: 04-marker-detection.html
     - text: "Interactive"
       href: interactive.html
   right:
