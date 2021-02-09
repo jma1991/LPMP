@@ -19,7 +19,7 @@ Set chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.path = "cache/08-marker-detection.Rmd/",
+  cache.path = "cache/04-marker-detection.Rmd/",
   dev        = "png",
   echo       = TRUE,
   error      = FALSE,
@@ -28,11 +28,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load required packages:
+Load Bioconductor packages:
 
 ```{r}
 library(scater)
 library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggforce)
+library(pheatmap)
 ```
 
 ```{r, include = FALSE}
@@ -42,7 +50,13 @@ DT::datatable(matrix()) # Import datatable options, quietly
 Read experiment data:
 
 ```{r}
-sce <- readRDS("output/07-cell-cycle.rds")
+sce <- readRDS("output/03-clustering.rds")
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
 ```
 
 ## Welch *t*-test
@@ -52,7 +66,7 @@ sce <- readRDS("output/07-cell-cycle.rds")
 Find non-specific candidate marker genes between clusters:
 
 ```{r}
-res <- findMarkers(sce, sce$cluster, test.type = "t", pval.type = "any")
+res <- findMarkers(sce, groups = sce$cluster_integrated, block = sce$batch, test.type = "t", pval.type = "any")
 
 sig <- lapply(res, subset, FDR < 0.05)
 
@@ -112,7 +126,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme_no_axes() + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -152,7 +166,7 @@ for (n in names(sig)) {
 Find specific candidate marker genes between clusters:
 
 ```{r}
-res <- findMarkers(sce, sce$cluster, test.type = "t", pval.type = "all")
+res <- findMarkers(sce, groups = sce$cluster_integrated, block = sce$batch, test.type = "t", pval.type = "all")
 
 sig <- lapply(res, subset, FDR < 0.05)
 
@@ -212,7 +226,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme_no_axes() + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -254,7 +268,7 @@ for (n in names(sig)) {
 Find non-specific candidate marker genes between clusters:
 
 ```{r}
-res <- findMarkers(sce, sce$cluster, test.type = "wilcox", pval.type = "any")
+res <- findMarkers(sce, groups = sce$cluster_integrated, block = sce$batch, test.type = "wilcox", pval.type = "any")
 
 sig <- lapply(res, subset, FDR < 0.05)
 
@@ -314,7 +328,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme_no_axes() + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -354,7 +368,7 @@ for (n in names(sig)) {
 Find specific candidate marker genes between clusters:
 
 ```{r}
-res <- findMarkers(sce, sce$cluster, test.type = "wilcox", pval.type = "all")
+res <- findMarkers(sce, groups = sce$cluster_integrated, block = sce$batch, test.type = "wilcox", pval.type = "all")
 
 sig <- lapply(res, subset, FDR < 0.05)
 
@@ -414,7 +428,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme_no_axes() + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -456,7 +470,7 @@ for (n in names(sig)) {
 Find non-specific candidate marker genes between clusters:
 
 ```{r}
-res <- findMarkers(sce, sce$cluster, test.type = "binom", pval.type = "any")
+res <- findMarkers(sce, groups = sce$cluster_integrated, block = sce$batch, test.type = "binom", pval.type = "any")
 
 sig <- lapply(res, subset, FDR < 0.05)
 
@@ -516,7 +530,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme_no_axes() + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -556,7 +570,7 @@ for (n in names(sig)) {
 Find specific candidate marker genes between clusters:
 
 ```{r}
-res <- findMarkers(sce, sce$cluster, test.type = "binom", pval.type = "all")
+res <- findMarkers(sce, groups = sce$cluster_integrated, block = sce$batch, test.type = "binom", pval.type = "all")
 
 sig <- lapply(res, subset, FDR < 0.05)
 
@@ -616,7 +630,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme(aspect.ratio = 1, legend.title = element_blank()))
+  plt <- lapply(ids, function(x) plotUMAP(sce, colour_by = x) + ggtitle(x) + theme_no_axes() + theme(aspect.ratio = 1, legend.title = element_blank()))
 
   cat("##### Cluster", n, "\n")
 
@@ -658,7 +672,7 @@ for (n in names(sig)) {
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, file = "output/08-marker-detection.rds")
+saveRDS(sce, file = "output/04-marker-detection.rds")
 ```
 
 ### Session
