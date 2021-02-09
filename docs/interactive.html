@@ -541,16 +541,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtreed5c8890cc8ce48ffeca39f9c39b21f8ab4e121e1targetblankd5c8890a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP/tree/d5c8890cc8ce48ffeca39f9c39b21f8ab4e121e1" target="_blank">d5c8890</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtreed5c1fcba1101a7006309d6e463a65d3e83a7b18ftargetblankd5c1fcba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP/tree/d5c1fcba1101a7006309d6e463a65d3e83a7b18f" target="_blank">d5c1fcb</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtreed5c8890cc8ce48ffeca39f9c39b21f8ab4e121e1targetblankd5c8890a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtreed5c1fcba1101a7006309d6e463a65d3e83a7b18ftargetblankd5c1fcba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP/tree/d5c8890cc8ce48ffeca39f9c39b21f8ab4e121e1" target="_blank">d5c8890</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP/tree/d5c1fcba1101a7006309d6e463a65d3e83a7b18f" target="_blank">d5c1fcb</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -611,6 +611,57 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/jma1991/LPMP/blob/d5c1fcba1101a7006309d6e463a65d3e83a7b18f/analysis/interactive.Rmd" target="_blank">d5c1fcb</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-09
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP/blob/4129a881fc7f4aaad5399e7c9f9a28c79bb9fa07/analysis/interactive.Rmd" target="_blank">4129a88</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-09
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP/67da304737f0c3645b38df0bcfc3e393a0fd0722/docs/interactive.html" target="_blank">67da304</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-09
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/jma1991/LPMP/blob/d5c8890cc8ce48ffeca39f9c39b21f8ab4e121e1/analysis/interactive.Rmd" target="_blank">d5c8890</a>
 </td>
 <td>
@@ -650,12 +701,13 @@ Build
 <p>Create iSEE directory for integrated data:</p>
 <pre class="r"><code>dir.create(&quot;shiny/integrated&quot;, showWarnings = FALSE, mode = &quot;0755&quot;)</code></pre>
 <p>Copy integrated data to iSEE directory:</p>
-<pre class="r"><code>file.copy(&quot;output/09-cell-annotation.rds&quot;, &quot;shiny/integrated/data.rds&quot;, overwrite = TRUE)</code></pre>
-<pre><code>[1] FALSE</code></pre>
+<pre class="r"><code>file.copy(&quot;output/04-marker-detection.rds&quot;, &quot;shiny/integrated/data.rds&quot;, overwrite = TRUE)</code></pre>
+<pre><code>[1] TRUE</code></pre>
 <p>Write code to iSEE application file:</p>
 <pre class="r r"><code># Load required packages
 library(iSEE)
 library(SingleCellExperiment)
+library(BiocSingular)
 
 # Load experiment object
 sce &lt;- readRDS(&quot;data.rds&quot;)
@@ -743,23 +795,24 @@ iSEE(sce, appTitle = &quot;LPMP&quot;, colormap = ecm)</code></pre>
 <pre class="r"><code>deployApp(appDir = &quot;shiny/integrated&quot;, appName = &quot;LPMP&quot;, appTitle = &quot;LPMP&quot;, launch.browser = FALSE, forceUpdate = TRUE)</code></pre>
 <pre><code>Preparing to deploy application...DONE
 Uploading bundle for application: 3606338...DONE
-Deploying bundle: 4200351 for application: 3606338 ...
-Waiting for task: 868147565
+Deploying bundle: 4200416 for application: 3606338 ...
+Waiting for task: 868158523
+  building: Processing bundle: 4200416
   building: Parsing manifest
-  building: Building image: 4789645
+  building: Building image: 4789731
   building: Installing system dependencies
   building: Fetching packages
   building: Installing packages
   building: Installing files
-  building: Pushing image: 4789645
+  building: Pushing image: 4789731
   deploying: Starting instances
   rollforward: Activating new instances
-  success: Stopping old instances
+  terminating: Stopping old instances
 Application successfully deployed to https://jashmore.shinyapps.io/LPMP/</code></pre>
 <p>Allocate more memory to the iSEE application:</p>
 <pre class="r"><code>configureApp(appName = &quot;LPMP&quot;, appDir = &quot;shiny/integrated&quot;, size = &quot;xxlarge&quot;)</code></pre>
 <pre><code>Preparing to deploy application...DONE
-Waiting for task: 868148688
+Waiting for task: 868159688
   deploying: Starting instances
   rollforward: Activating new instances
   terminating: Stopping old instances
