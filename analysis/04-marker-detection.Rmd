@@ -106,7 +106,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster_integrated", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
   
   cat("\n\n")
   
@@ -150,7 +150,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster_integrated", colour_by = "cluster_integrated", scales = "free", ncol = 4)
 
   cat("##### Cluster", n, "\n")
 
@@ -206,7 +206,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster_integrated", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
   
   cat("\n\n")
   
@@ -250,7 +250,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster_integrated", colour_by = "cluster_integrated", scales = "free", ncol = 4)
 
   cat("##### Cluster", n, "\n")
 
@@ -308,7 +308,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster_integrated", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
   
   cat("\n\n")
   
@@ -352,7 +352,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster_integrated", colour_by = "cluster_integrated", scales = "free", ncol = 4)
 
   cat("##### Cluster", n, "\n")
 
@@ -408,7 +408,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster_integrated", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
   
   cat("\n\n")
   
@@ -452,7 +452,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster_integrated", colour_by = "cluster_integrated", scales = "free", ncol = 4)
 
   cat("##### Cluster", n, "\n")
 
@@ -510,7 +510,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster_integrated", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
   
   cat("\n\n")
   
@@ -554,7 +554,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster_integrated", colour_by = "cluster_integrated", scales = "free", ncol = 4)
 
   cat("##### Cluster", n, "\n")
 
@@ -610,7 +610,7 @@ for (n in names(sig)) {
 
   cat("##### Cluster", n, "\n")
   
-  plotHeatmap(sce, colour_columns_by = "cluster", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
+  plotHeatmap(sce, colour_columns_by = "cluster_integrated", features = ids, center = TRUE, symmetric = TRUE, cluster_rows = ifelse(length(ids) >= 2, TRUE, FALSE), show_colnames = FALSE)
   
   cat("\n\n")
   
@@ -654,7 +654,7 @@ for (n in names(sig)) {
 
   ids <- rownames(top)
 
-  plt <- plotExpression(sce, features = ids, x = "cluster", colour_by = "cluster", scales = "free", ncol = 4)
+  plt <- plotExpression(sce, features = ids, x = "cluster_integrated", colour_by = "cluster_integrated", scales = "free", ncol = 4)
 
   cat("##### Cluster", n, "\n")
 
@@ -668,6 +668,12 @@ for (n in names(sig)) {
 ## Summary
 
 ### Output
+
+Keep original feature names:
+
+```{r}
+rownames(sce) <- rowData(sce)$gene_id
+```
 
 Save experiment object to disk:
 
