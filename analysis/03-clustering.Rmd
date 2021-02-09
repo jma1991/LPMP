@@ -19,7 +19,7 @@ Set chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cache.path = "cache/05-clustering.Rmd/",
+  cache.path = "cache/03-clustering.Rmd/",
   dev        = "png",
   error      = FALSE,
   message    = FALSE,
@@ -27,20 +27,28 @@ knitr::opts_chunk$set(
 )
 ```
 
-Load required packages:
+Load Bioconductor packages:
 
 ```{r}
+library(scater)
+library(scran)
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(dynamicTreeCut)
+library(ggforce)
 library(cluster)
 library(igraph)
 library(pheatmap)
-library(scater)
-library(scran)
 ```
 
 Read experiment data:
 
 ```{r}
-sce <- readRDS("output/04-reduced-dimensions.rds")
+sce <- readRDS("output/02-reduced-dimensions.rds")
 ```
 
 ## Graph
@@ -50,17 +58,17 @@ sce <- readRDS("output/04-reduced-dimensions.rds")
 Perform clustering using rank-based weights followed by Walktrap clustering:
 
 ```{r}
-snn <- buildSNNGraph(sce, type = "rank", use.dimred = "PCA")
+snn <- buildSNNGraph(sce, type = "rank", use.dimred = "corrected")
 
 cls <- cluster_walktrap(snn)$membership
 
-sce$cluster_walktrap <- factor(cls)
+sce$cluster_walktrap_integrated <- factor(cls)
 ```
 
 Calculate the modularity of each cluster:
 
 ```{r}
-mod <- clusterModularity(snn, sce$cluster_walktrap, as.ratio = TRUE)
+mod <- clusterModularity(snn, sce$cluster_walktrap_integrated, as.ratio = TRUE)
 
 mod <- Matrix::forceSymmetric(mod)
 
@@ -78,13 +86,13 @@ pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FA
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_walktrap", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_walktrap_integrated", "sum", "detected", "altexps_ERCC_percent")
 ```
 
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + theme_no_axes() + coord_fixed(1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -92,7 +100,7 @@ patchwork::wrap_plots(plt)
 #### TSNE
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -100,7 +108,7 @@ patchwork::wrap_plots(plt)
 #### UMAP
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -110,17 +118,17 @@ patchwork::wrap_plots(plt)
 Perform clustering using Jaccard-based weights followed by Louvain clustering:
 
 ```{r}
-snn <- buildSNNGraph(sce, type = "jaccard", use.dimred = "PCA")
+snn <- buildSNNGraph(sce, type = "jaccard", use.dimred = "corrected")
 
 cls <- cluster_louvain(snn)$membership
 
-sce$cluster_louvain <- factor(cls)
+sce$cluster_louvain_integrated <- factor(cls)
 ```
 
 Calculate the modularity of each cluster:
 
 ```{r}
-mod <- clusterModularity(snn, sce$cluster_louvain, as.ratio = TRUE)
+mod <- clusterModularity(snn, sce$cluster_louvain_integrated, as.ratio = TRUE)
 
 mod <- Matrix::forceSymmetric(mod)
 
@@ -138,13 +146,13 @@ pheatmap(mod, color = col, breaks = brk, cluster_rows = FALSE, cluster_cols = FA
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_louvain", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_louvain_integrated", "sum", "detected", "altexps_ERCC_percent")
 ```
 
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + theme_no_axes() + coord_fixed(1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -152,7 +160,7 @@ patchwork::wrap_plots(plt)
 #### TSNE
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -160,7 +168,7 @@ patchwork::wrap_plots(plt)
 #### UMAP
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -172,9 +180,9 @@ patchwork::wrap_plots(plt)
 Perform k-means clustering on the PCA matrix:
 
 ```{r}
-set.seed(124183532)
+set.seed(1010011101)
 
-dim <- reducedDim(sce, "PCA")
+dim <- reducedDim(sce, "corrected")
 
 gap <- clusGap(dim, kmeans, K.max = 20)
 
@@ -196,11 +204,11 @@ ggplot(dat, aes(var, val)) +
 Select optimal number of clusters:
 
 ```{r}
-set.seed(124183532)
+set.seed(1010011101)
 
 cls <- kmeans(dim, centers = num)
 
-sce$cluster_kmeans <- factor(cls$cluster)
+sce$cluster_kmeans_integrated <- factor(cls$cluster)
 ```
 
 Check the number of clusters before plotting:
@@ -226,13 +234,13 @@ plot(hcl)
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_kmeans", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_kmeans_integrated", "sum", "detected", "altexps_ERCC_percent")
 ```
 
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + theme_no_axes() + coord_fixed(1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -240,7 +248,7 @@ patchwork::wrap_plots(plt)
 #### TSNE
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -248,7 +256,7 @@ patchwork::wrap_plots(plt)
 #### UMAP
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -260,7 +268,7 @@ patchwork::wrap_plots(plt)
 Perform hierarchical cluster analysis on the PCA data:
 
 ```{r}
-dim <- reducedDim(sce, "PCA")
+dim <- reducedDim(sce, "corrected")
 
 dst <- dist(dim)
 
@@ -268,9 +276,9 @@ cls <- hclust(dst, "ward.D2")
 
 mat <- as.matrix(dst)
 
-cut <- dynamicTreeCut::cutreeDynamic(cls, distM = mat)
+cut <- cutreeDynamic(cls, distM = mat)
 
-sce$cluster_hclust <- factor(cut)
+sce$cluster_hclust_integrated <- factor(cut)
 ```
 
 Calculate the modularity of each cluster:
@@ -278,7 +286,7 @@ Calculate the modularity of each cluster:
 ```{r}
 sil <- silhouette(cut, dist = dst)
 
-col <- seq_len(nlevels(sce$cluster_hclust))
+col <- seq_len(nlevels(sce$cluster_hclust_integrated))
 
 plot(sil, col = col, border = NA)
 ```
@@ -286,13 +294,13 @@ plot(sil, col = col, border = NA)
 Inspect dimensionality reduction plots coloured by explanatory variables:
 
 ```{r}
-var <- c("cluster_hclust", "sum", "detected", "altexps_ERCC_percent")
+var <- c("cluster_hclust_integrated", "sum", "detected", "altexps_ERCC_percent")
 ```
 
 #### PCA
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotPCA(sce, colour_by = x) + coord_fixed())
+plt <- lapply(var, function(x) plotReducedDim(sce, "corrected", colour_by = x) + theme_no_axes() + coord_fixed(1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -300,7 +308,7 @@ patchwork::wrap_plots(plt)
 #### TSNE
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotTSNE(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -308,7 +316,7 @@ patchwork::wrap_plots(plt)
 #### UMAP
 
 ```{r, fig.height = 8, fig.width = 10}
-plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme(aspect.ratio = 1))
+plt <- lapply(var, function(x) plotUMAP(sce, colour_by = x) + theme_no_axes() + theme(aspect.ratio = 1))
 
 patchwork::wrap_plots(plt)
 ```
@@ -318,7 +326,7 @@ patchwork::wrap_plots(plt)
 Choose clustering method for downstream analysis:
 
 ```{r}
-sce$cluster <- sce$cluster_louvain
+sce$cluster_integrated <- sce$cluster_louvain_integrated
 ```
 
 ## Summary
@@ -328,7 +336,7 @@ sce$cluster <- sce$cluster_louvain
 Save experiment object to disk:
 
 ```{r}
-saveRDS(sce, file = "output/05-clustering.rds")
+saveRDS(sce, file = "output/03-clustering.rds")
 ```
 
 ### Session
