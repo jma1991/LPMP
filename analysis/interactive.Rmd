@@ -61,6 +61,7 @@ Write code to iSEE application file:
 # Load required packages
 library(iSEE)
 library(SingleCellExperiment)
+library(BiocSingular)
 
 # Load experiment object
 sce <- readRDS("data.rds")
