@@ -154,7 +154,7 @@ ann <- list(
 
 Plot expression heatmap:
 
-```{r}
+```{r fig.width = 10, fig.height = 6}
 pheatmap(
   mat = mat.z,
   color = pheatmap.color("RdBu"),
@@ -195,7 +195,7 @@ ann <- list(
 
 Plot expression heatmap:
 
-```{r}
+```{r fig.width = 10, fig.height = 6}
 pheatmap(
   mat = mat.z,
   color = pheatmap.color("RdBu"),
