@@ -17,6 +17,10 @@ navbar:
           href: 03-clustering.html
         - text: "Marker detection"
           href: 04-marker-detection.html
+    - text: "Analysis"
+      menu:
+        - text: "Lineage markers"
+          href: lineage-markers.html
     - text: "Interactive"
       href: interactive.html
   right:
