@@ -52,7 +52,7 @@ dir.create("shiny/integrated", showWarnings = FALSE, mode = "0755")
 Copy integrated data to iSEE directory:
 
 ```{r}
-file.copy("output/09-cell-annotation.rds", "shiny/integrated/data.rds", overwrite = TRUE)
+file.copy("output/04-marker-detection.rds", "shiny/integrated/data.rds", overwrite = TRUE)
 ```
 
 Write code to iSEE application file:
