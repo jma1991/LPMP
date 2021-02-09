@@ -60,12 +60,14 @@ rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_na
 Define colour palettes:
 
 ```{r}
-cluster.palette <- c("1" = "#4E79A7",
-                    "2" = "#F28E2B",
-                    "3" = "#E15759",
-                    "4" = "#76B7B2",
-                    "5" = "#59A14F",
-                    "6" = "#EDC948")
+cluster.palette <- c(
+  "1" = "#4E79A7",
+  "2" = "#F28E2B",
+  "3" = "#E15759",
+  "4" = "#76B7B2",
+  "5" = "#59A14F",
+  "6" = "#EDC948"
+)
 
 marker.palette <- c(
   "Ectoderm" = "#b49041",
@@ -75,6 +77,11 @@ marker.palette <- c(
   "Lateral mesoderm" = "#cd5d39",
   "Paraxial mesoderm" = "#4aac8d",
   "Primitive streak" = "#c85979"
+)
+
+stage.palette <- c(
+  "EHF" = "#B07AA1",
+  "LHF" = "#FF9DA7"
 )
 ```
 
@@ -147,8 +154,8 @@ Create annotation:
 ```{r}
 ann <- list(
   row = data.frame(Marker = ids$lineage, row.names = ids$gene_id),
-  col = data.frame(Cluster = sce$cluster_integrated, row.names = colnames(sce)),
-  colors = list(Cluster = cluster.palette, Marker = marker.palette)
+  col = data.frame(Cluster = sce$cluster_integrated, Stage = sce$stage, row.names = colnames(sce)),
+  colors = list(Cluster = cluster.palette, Stage = stage.palette, Marker = marker.palette)
 )
 ```
 
@@ -188,8 +195,8 @@ Create annotation:
 ```{r}
 ann <- list(
   row = data.frame(Marker = ids$lineage, row.names = ids$gene_id),
-  col = data.frame(Cluster = sce$cluster_integrated, row.names = colnames(sce)),
-  colors = list(Cluster = cluster.palette, Marker = marker.palette)
+  col = data.frame(Cluster = sce$cluster_integrated, Stage = sce$stage, row.names = colnames(sce)),
+  colors = list(Cluster = cluster.palette, Stage = stage.palette, Marker = marker.palette)
 )
 ```
 
