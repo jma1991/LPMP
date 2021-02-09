@@ -553,16 +553,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtree67b47a00a0bd6b4cf784af1d885690a65429279atargetblank67b47a0a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP/tree/67b47a00a0bd6b4cf784af1d885690a65429279a" target="_blank">67b47a0</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtree9b38eedd2bc8c4bf0951caa57667c405259c7a79targetblank9b38eeda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/jma1991/LPMP/tree/9b38eedd2bc8c4bf0951caa57667c405259c7a79" target="_blank">9b38eed</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtree67b47a00a0bd6b4cf784af1d885690a65429279atargetblank67b47a0a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomjma1991LPMPtree9b38eedd2bc8c4bf0951caa57667c405259c7a79targetblank9b38eeda" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP/tree/67b47a00a0bd6b4cf784af1d885690a65429279a" target="_blank">67b47a0</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/jma1991/LPMP/tree/9b38eedd2bc8c4bf0951caa57667c405259c7a79" target="_blank">9b38eed</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -619,6 +619,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jma1991/LPMP/blob/9b38eedd2bc8c4bf0951caa57667c405259c7a79/analysis/lineage-markers.Rmd" target="_blank">9b38eed</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-09
+</td>
+<td>
+Build
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jma1991/LPMP/32810be9235a16e6a3db8f7a16be5dde36afa2b0/docs/lineage-markers.html" target="_blank">32810be</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-09
+</td>
+<td>
+Build
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -704,12 +738,14 @@ sce &lt;- sce[, order(sce$cluster_integrated)]</code></pre>
 <p>Make feature names unique:</p>
 <pre class="r"><code>rownames(sce) &lt;- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)</code></pre>
 <p>Define colour palettes:</p>
-<pre class="r"><code>cluster.palette &lt;- c(&quot;1&quot; = &quot;#4E79A7&quot;,
-                    &quot;2&quot; = &quot;#F28E2B&quot;,
-                    &quot;3&quot; = &quot;#E15759&quot;,
-                    &quot;4&quot; = &quot;#76B7B2&quot;,
-                    &quot;5&quot; = &quot;#59A14F&quot;,
-                    &quot;6&quot; = &quot;#EDC948&quot;)
+<pre class="r"><code>cluster.palette &lt;- c(
+  &quot;1&quot; = &quot;#4E79A7&quot;,
+  &quot;2&quot; = &quot;#F28E2B&quot;,
+  &quot;3&quot; = &quot;#E15759&quot;,
+  &quot;4&quot; = &quot;#76B7B2&quot;,
+  &quot;5&quot; = &quot;#59A14F&quot;,
+  &quot;6&quot; = &quot;#EDC948&quot;
+)
 
 marker.palette &lt;- c(
   &quot;Ectoderm&quot; = &quot;#b49041&quot;,
@@ -719,6 +755,11 @@ marker.palette &lt;- c(
   &quot;Lateral mesoderm&quot; = &quot;#cd5d39&quot;,
   &quot;Paraxial mesoderm&quot; = &quot;#4aac8d&quot;,
   &quot;Primitive streak&quot; = &quot;#c85979&quot;
+)
+
+stage.palette &lt;- c(
+  &quot;EHF&quot; = &quot;#B07AA1&quot;,
+  &quot;LHF&quot; = &quot;#FF9DA7&quot;
 )</code></pre>
 <p>Define helper functions:</p>
 <pre class="r"><code>pheatmap.mat &lt;- function(x) {
@@ -780,8 +821,8 @@ mat.z &lt;- pheatmap.mat(mat.x)</code></pre>
 <p>Create annotation:</p>
 <pre class="r"><code>ann &lt;- list(
   row = data.frame(Marker = ids$lineage, row.names = ids$gene_id),
-  col = data.frame(Cluster = sce$cluster_integrated, row.names = colnames(sce)),
-  colors = list(Cluster = cluster.palette, Marker = marker.palette)
+  col = data.frame(Cluster = sce$cluster_integrated, Stage = sce$stage, row.names = colnames(sce)),
+  colors = list(Cluster = cluster.palette, Stage = stage.palette, Marker = marker.palette)
 )</code></pre>
 <p>Plot expression heatmap:</p>
 <pre class="r"><code>pheatmap(
@@ -801,6 +842,43 @@ mat.z &lt;- pheatmap.mat(mat.x)</code></pre>
   show_colnames = FALSE
 )</code></pre>
 <p><img src="figure/lineage-markers.Rmd/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP/blob/4c0a2d695996d03fc758c02b13cd8d0395a55364/docs/figure/lineage-markers.Rmd/unnamed-chunk-11-1.png" target="_blank">4c0a2d6</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="reconstructed-assay" class="section level3">
 <h3>Reconstructed assay</h3>
@@ -811,8 +889,8 @@ mat.z &lt;- pheatmap.mat(mat.x)</code></pre>
 <p>Create annotation:</p>
 <pre class="r"><code>ann &lt;- list(
   row = data.frame(Marker = ids$lineage, row.names = ids$gene_id),
-  col = data.frame(Cluster = sce$cluster_integrated, row.names = colnames(sce)),
-  colors = list(Cluster = cluster.palette, Marker = marker.palette)
+  col = data.frame(Cluster = sce$cluster_integrated, Stage = sce$stage, row.names = colnames(sce)),
+  colors = list(Cluster = cluster.palette, Stage = stage.palette, Marker = marker.palette)
 )</code></pre>
 <p>Plot expression heatmap:</p>
 <pre class="r"><code>pheatmap(
@@ -832,6 +910,43 @@ mat.z &lt;- pheatmap.mat(mat.x)</code></pre>
   show_colnames = FALSE
 )</code></pre>
 <p><img src="figure/lineage-markers.Rmd/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/jma1991/LPMP/blob/4c0a2d695996d03fc758c02b13cd8d0395a55364/docs/figure/lineage-markers.Rmd/unnamed-chunk-14-1.png" target="_blank">4c0a2d6</a>
+</td>
+<td>
+James Ashmore
+</td>
+<td>
+2021-02-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="summary" class="section level2">
