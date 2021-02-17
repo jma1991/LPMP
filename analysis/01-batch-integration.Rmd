@@ -167,6 +167,25 @@ Flatten nested list of objects:
 sce <- lapply(rapply(sce, enquote, how = "unlist"), eval)
 ```
 
+Define hierarchical merge order:
+
+```{r}
+ind <- data.frame(
+  batch = names(sce), 
+  sample = gsub("\\.(G1|G2M|S)", "", names(sce)),
+  ncells = sapply(sce, ncol), 
+  row.names = NULL
+)
+
+ind <- split(ind, ind$sample)
+
+ind <- lapply(ind, function(x) x[order(x$ncells, decreasing = TRUE), ])
+
+ind <- lapply(ind, function(x) x$batch)
+
+names(ind) <- NULL
+```
+
 Correct experiments using nearest neighbours:
 
 ```{r}
@@ -176,7 +195,7 @@ mnn <- correctExperiments(
   sce,
   subset.row = hvg,
   correct.all = TRUE,
-  PARAM = FastMnnParam(auto.merge = TRUE, get.variance = TRUE)
+  PARAM = FastMnnParam(merge.order = ind, get.variance = TRUE)
 )
 ```
 
@@ -209,7 +228,7 @@ var <- metadata(mnn)$merge.info$lost.var
 
 col <- colorRampPalette(RColorBrewer::brewer.pal(n = 5, name = "Reds"))(100)
 
-brk <- seq(0, max(var), length.out = 101)
+brk <- seq(0, max(var, na.rm = TRUE), length.out = 101)
 
 pheatmap(var, color = col, display_numbers = TRUE, number_format = "%.2f", cluster_cols = FALSE, cluster_rows = FALSE, angle_col = 0)
 ```
@@ -239,7 +258,7 @@ Visualize the corrected PCA:
 ```{r}
 ggcells(mnn, aes(corrected.1, corrected.2, colour = cluster)) + 
   geom_point(size = 1) + 
-  scale_colour_brewer(name = "Cluster", palette = "Set1") + 
+  scale_colour_brewer(name = "Cluster", palette = "Set3") + 
   labs(x = "PCA 1", y = "PCA 2") + 
   facet_wrap(~ batch) + 
   theme_no_axes() + 
