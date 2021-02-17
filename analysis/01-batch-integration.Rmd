@@ -44,6 +44,12 @@ library(ggforce)
 library(pheatmap)
 ```
 
+Source user functions:
+
+```{r}
+source("code/splitByCol.R")
+```
+
 ## Data
 
 ### Test data
@@ -112,7 +118,7 @@ sce <- lapply(sce, "[", i = ids)
 Model the per-gene variance:
 
 ```{r}
-dec <- lapply(sce, modelGeneVarWithSpikes, "ERCC")
+dec <- lapply(sce, function(x) modelGeneVarWithSpikes(x, spikes = "ERCC", block = x$phase))
 ```
 
 Combine variance decompositions:
@@ -148,6 +154,18 @@ sce <- multiBatchNorm(sce)
 ```
 
 ### Batch integration
+
+Split each batch by phase:
+
+```{r}
+sce <- lapply(sce, function(x) splitByCol(x, x$phase))
+```
+
+Flatten nested list of objects:
+
+```{r}
+sce <- lapply(rapply(sce, enquote, how = "unlist"), eval)
+```
 
 Correct experiments using nearest neighbours:
 
@@ -240,8 +258,8 @@ Visualize the corrected PCA using a TSNE plot:
 
 ```{r}
 ggcells(mnn, aes(TSNE.1, TSNE.2, colour = cluster)) +
-  geom_point(size = 1) +
-  scale_colour_brewer(name = "Cluster", palette = "Set1") + 
+  geom_point(size = 1) + 
+  scale_colour_brewer(name = "Cluster", palette = "Set3") + 
   labs(x = "TSNE 1", y = "TSNE 2") +
   facet_wrap(~ batch) +
   theme_no_axes() + 
@@ -261,7 +279,7 @@ Visualize the corrected PCA using a UMAP plot:
 ```{r}
 ggcells(mnn, aes(UMAP.1, UMAP.2, colour = cluster)) +
   geom_point(size = 1) +
-  scale_colour_brewer(name = "Cluster", palette = "Set1") +
+  scale_colour_brewer(name = "Cluster", palette = "Set3") + 
   labs(x = "UMAP 1", y = "UMAP 2") +
   facet_wrap(~ batch) +
   theme_no_axes() + 
