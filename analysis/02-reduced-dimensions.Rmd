@@ -122,7 +122,7 @@ reducedDim(sce, "corrected") <- reducedDim(sce, "corrected")[, idx]
 Plot scatter matrix of retained PCs:
 
 ```{r fig.height = 8, fig.width = 10}
-plotReducedDim(sce, "corrected", colour_by = "cluster.temp", ncomponents = num) + theme(legend.position = "none")
+plotReducedDim(sce, "corrected", colour_by = "cluster.temp", ncomponents = length(idx)) + theme(legend.position = "none")
 ```
 
 Cluster cells to help examine effect of TSNE and UMAP hyper-parameters:
@@ -182,7 +182,7 @@ Select optimal perplexity value and number of iterations:
 ```{r}
 set.seed(1101000110)
 
-sce <- runTSNE(sce, dimred = "corrected", perplexity = 50, max_iter = 1500)
+sce <- runTSNE(sce, dimred = "corrected", perplexity = 23, max_iter = 500)
 ```
 
 ## UMAP
@@ -198,7 +198,7 @@ max <- ifelse(ncol(sce) < 100, ncol(sce), 100)
 
 num <- seq(2, max, length.out = 6)
 
-dst <- seq(0, 01, length.out = 6)
+dst <- seq(0, 1, length.out = 6)
 
 arg <- expand.grid(
   n_neighbors = floor(num),
@@ -230,7 +230,7 @@ Select optimal number of nearest neighbors:
 ```{r}
 set.seed(0000100110)
 
-sce <- runUMAP(sce, dimred = "corrected", n_neighbors = 21, min_dist = 0.6)
+sce <- runUMAP(sce, dimred = "corrected", n_neighbors = 41, min_dist = 0.2)
 ```
 
 ## Variables {.tabset}
