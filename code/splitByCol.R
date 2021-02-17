@@ -4,6 +4,6 @@ splitByCol <- function(x, f, drop = FALSE) {
 
   out <- lapply(by.col, function(i) x[, i])
 
-  List(out)
+  return(out)
 
 }
