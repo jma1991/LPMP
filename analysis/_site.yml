@@ -21,6 +21,10 @@ navbar:
       menu:
         - text: "Lineage markers"
           href: lineage-markers.html
+        - text: "Mouse integration"
+          href: mouse-integration.html
+        - text: "Human integration"
+          href: human-integration.html
     - text: "Interactive"
       href: interactive.html
   right:
