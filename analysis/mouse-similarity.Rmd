@@ -82,7 +82,9 @@ ids <- unique(unlist(sce$query$cell.remapped))
 sce$reference <- sce$reference[, ids]
 ```
 
-## Results
+## Results {.tabset}
+
+### EHF vs EHF
 
 Setup results table and iterator:
 
@@ -90,8 +92,8 @@ Setup results table and iterator:
 res <- split(sce$query$cell, sce$query$sample)
 
 res <- expand.grid(
-  LPMP_EHF = res$LPMP_EHF,
-  LPMP_LHF = res$LPMP_LHF,
+  A = res$LPMP_EHF,
+  B = res$LPMP_EHF,
   stringsAsFactors = FALSE
 )
 
@@ -107,9 +109,9 @@ Calculate number of mutual nearest neighbors:
 ```{r}
 res$intersect <- sapply(ind, function(i) {
   
-  v1 <- res[i, "LPMP_EHF"]
+  v1 <- res[i, "A"]
 
-  v2 <- res[i, "LPMP_LHF"]
+  v2 <- res[i, "B"]
 
   n1 <- knn[[v1]]
 
@@ -125,9 +127,9 @@ Calculate Jaccard index of mutual nearest neighbors:
 ```{r}
 res$jaccard <- sapply(ind, function(i) {
   
-  v1 <- res[i, "LPMP_EHF"]
+  v1 <- res[i, "A"]
 
-  v2 <- res[i, "LPMP_LHF"]
+  v2 <- res[i, "B"]
 
   n1 <- knn[[v1]]
 
@@ -152,7 +154,7 @@ Plot heatmap of intersection number:
 
 ```{r fig.width = 8, fig.height = 8}
 pheatmap(
-  mat = acast(res, LPMP_EHF ~ LPMP_LHF, value.var = "intersect"),
+  mat = acast(res, A ~ B, value.var = "intersect"),
   color = viridis(100),
   breaks = seq(0, 20, length.out = 101),
   border_color = NA,
@@ -166,7 +168,195 @@ Plot heatmap of jaccard index:
 
 ```{r fig.width = 8, fig.height = 8}
 pheatmap(
-  mat = acast(res, LPMP_EHF ~ LPMP_LHF, value.var = "jaccard"),
+  mat = acast(res, A ~ B, value.var = "jaccard"),
+  color = viridis(100),
+  breaks = seq(0, 1, length.out = 101),
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  fontsize = 5
+)
+```
+
+### LHG vs LHF
+
+Setup results table and iterator:
+
+```{r}
+res <- split(sce$query$cell, sce$query$sample)
+
+res <- expand.grid(
+  A = res$LPMP_EHF,
+  B = res$LPMP_LHF,
+  stringsAsFactors = FALSE
+)
+
+knn <- sce$query$cell.remapped
+
+names(knn) <- sce$query$cell
+
+ind <- seq_len(nrow(res))
+```
+
+Calculate number of mutual nearest neighbors:
+
+```{r}
+res$intersect <- sapply(ind, function(i) {
+  
+  v1 <- res[i, "A"]
+
+  v2 <- res[i, "B"]
+
+  n1 <- knn[[v1]]
+
+  n2 <- knn[[v2]]
+  
+  length(intersect(n1, n2))
+
+})
+```
+
+Calculate Jaccard index of mutual nearest neighbors:
+
+```{r}
+res$jaccard <- sapply(ind, function(i) {
+  
+  v1 <- res[i, "A"]
+
+  v2 <- res[i, "B"]
+
+  n1 <- knn[[v1]]
+
+  n2 <- knn[[v2]]
+  
+  I <- length(intersect(n1, n2))
+  
+  U <- length(n1) + length(n2) - I
+  
+  I / U
+
+})
+```
+
+Print table of results:
+
+```{r}
+DT::datatable(res)
+```
+
+Plot heatmap of intersection number:
+
+```{r fig.width = 8, fig.height = 8}
+pheatmap(
+  mat = acast(res, A ~ B, value.var = "intersect"),
+  color = viridis(100),
+  breaks = seq(0, 20, length.out = 101),
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  fontsize = 5
+)
+```
+
+Plot heatmap of jaccard index:
+
+```{r fig.width = 8, fig.height = 8}
+pheatmap(
+  mat = acast(res, A ~ B, value.var = "jaccard"),
+  color = viridis(100),
+  breaks = seq(0, 1, length.out = 101),
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  fontsize = 5
+)
+```
+
+### EHF vs LHF
+
+Setup results table and iterator:
+
+```{r}
+res <- split(sce$query$cell, sce$query$sample)
+
+res <- expand.grid(
+  A = res$LPMP_EHF,
+  B = res$LPMP_LHF,
+  stringsAsFactors = FALSE
+)
+
+knn <- sce$query$cell.remapped
+
+names(knn) <- sce$query$cell
+
+ind <- seq_len(nrow(res))
+```
+
+Calculate number of mutual nearest neighbors:
+
+```{r}
+res$intersect <- sapply(ind, function(i) {
+  
+  v1 <- res[i, "A"]
+
+  v2 <- res[i, "B"]
+
+  n1 <- knn[[v1]]
+
+  n2 <- knn[[v2]]
+  
+  length(intersect(n1, n2))
+
+})
+```
+
+Calculate Jaccard index of mutual nearest neighbors:
+
+```{r}
+res$jaccard <- sapply(ind, function(i) {
+  
+  v1 <- res[i, "A"]
+
+  v2 <- res[i, "B"]
+
+  n1 <- knn[[v1]]
+
+  n2 <- knn[[v2]]
+  
+  I <- length(intersect(n1, n2))
+  
+  U <- length(n1) + length(n2) - I
+  
+  I / U
+
+})
+```
+
+Print table of results:
+
+```{r}
+DT::datatable(res)
+```
+
+Plot heatmap of intersection number:
+
+```{r fig.width = 8, fig.height = 8}
+pheatmap(
+  mat = acast(res, A ~ B, value.var = "intersect"),
+  color = viridis(100),
+  breaks = seq(0, 20, length.out = 101),
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  fontsize = 5
+)
+```
+
+Plot heatmap of jaccard index:
+
+```{r fig.width = 8, fig.height = 8}
+pheatmap(
+  mat = acast(res, A ~ B, value.var = "jaccard"),
   color = viridis(100),
   breaks = seq(0, 1, length.out = 101),
   border_color = NA,
