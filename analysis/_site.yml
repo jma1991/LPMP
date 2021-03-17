@@ -21,8 +21,16 @@ navbar:
       menu:
         - text: "Lineage markers"
           href: lineage-markers.html
+    - text: "Mouse Atlas"
+      menu:
         - text: "Mouse integration"
           href: mouse-integration.html
+        - text: "Mouse neighbors"
+          href: mouse-neighbors.html
+        - text: "Mouse similarity"
+          href: mouse-similarity.html
+    - text: "Human Atlas"
+      menu:
         - text: "Human integration"
           href: human-integration.html
     - text: "Interactive"
