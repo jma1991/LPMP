@@ -15,13 +15,14 @@ Set chunk options:
 knitr::opts_chunk$set(
   autodep    = TRUE,
   cache      = TRUE,
-  cahce.lazy = FALSE,
-  cache.path = "cache/mouse-similarity.Rmd",
+  cache.lazy = FALSE,
+  cache.path = "cache/mouse-similarity.Rmd/",
   dev        = "png",
-  echo       = TRUE,
   error      = FALSE,
   message    = FALSE,
-  warning    = FALSE
+  warning    = FALSE,
+  fig.align = "center",
+  out.width = '100%'
 )
 ```
 
