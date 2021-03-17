@@ -186,7 +186,7 @@ Setup results table and iterator:
 res <- split(sce$query$cell, sce$query$sample)
 
 res <- expand.grid(
-  A = res$LPMP_EHF,
+  A = res$LPMP_LHF,
   B = res$LPMP_LHF,
   stringsAsFactors = FALSE
 )
