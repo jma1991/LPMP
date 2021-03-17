@@ -1,0 +1,186 @@
+---
+title: "Mouse similarity"
+author: "James Ashmore"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Setup
+
+Set chunk options:
+
+```{r}
+knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cahce.lazy = FALSE,
+  cache.path = "cache/mouse-similarity.Rmd",
+  dev        = "png",
+  echo       = TRUE,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE
+)
+```
+
+Load Bioconductor packages:
+
+```{r}
+library(scuttle)
+```
+
+Load CRAN packages:
+
+```{r}
+library(ggplot2)
+library(knitr)
+library(pheatmap)
+library(reshape2)
+library(viridis)
+```
+
+Source required functions:
+
+```{r}
+source("code/splitByCol.R")
+```
+
+Read experiment object:
+
+```{r}
+sce <- readRDS("output/mouse-neighbors.rds")
+```
+
+Make feature names unique:
+
+```{r}
+rownames(sce) <- uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce)$gene_name)
+```
+
+Make sample names unique:
+
+```{r}
+colnames(sce) <- sce$cell
+```
+
+## Processing
+
+Split experiment object by source annotation:
+
+```{r}
+sce <- splitByCol(sce, sce$source)
+```
+
+Subset reference data to re-mapped cells:
+
+```{r}
+ids <- unique(unlist(sce$query$cell.remapped))
+
+sce$reference <- sce$reference[, ids]
+```
+
+## Results
+
+Setup results table and iterator:
+
+```{r}
+res <- split(sce$query$cell, sce$query$sample)
+
+res <- expand.grid(
+  LPMP_EHF = res$LPMP_EHF,
+  LPMP_LHF = res$LPMP_LHF,
+  stringsAsFactors = FALSE
+)
+
+knn <- sce$query$cell.remapped
+
+names(knn) <- sce$query$cell
+
+ind <- seq_len(nrow(res))
+```
+
+Calculate number of mutual nearest neighbors:
+
+```{r}
+res$intersect <- sapply(ind, function(i) {
+  
+  v1 <- res[i, "LPMP_EHF"]
+
+  v2 <- res[i, "LPMP_LHF"]
+
+  n1 <- knn[[v1]]
+
+  n2 <- knn[[v2]]
+  
+  length(intersect(n1, n2))
+
+})
+```
+
+Calculate Jaccard index of mutual nearest neighbors:
+
+```{r}
+res$jaccard <- sapply(ind, function(i) {
+  
+  v1 <- res[i, "LPMP_EHF"]
+
+  v2 <- res[i, "LPMP_LHF"]
+
+  n1 <- knn[[v1]]
+
+  n2 <- knn[[v2]]
+  
+  I <- length(intersect(n1, n2))
+  
+  U <- length(n1) + length(n2) - I
+  
+  I / U
+
+})
+```
+
+Print table of results:
+
+```{r}
+DT::datatable(res)
+```
+
+Plot heatmap of intersection number:
+
+```{r fig.width = 8, fig.height = 8}
+pheatmap(
+  mat = acast(res, LPMP_EHF ~ LPMP_LHF, value.var = "intersect"),
+  color = viridis(100),
+  breaks = seq(0, 20, length.out = 101),
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  fontsize = 5
+)
+```
+
+Plot heatmap of jaccard index:
+
+```{r fig.width = 8, fig.height = 8}
+pheatmap(
+  mat = acast(res, LPMP_EHF ~ LPMP_LHF, value.var = "jaccard"),
+  color = viridis(100),
+  breaks = seq(0, 1, length.out = 101),
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = TRUE,
+  fontsize = 5
+)
+```
+
+## Summary
+
+### Session
+
+Print session information:
+
+```{r}
+sessionInfo()
+```
