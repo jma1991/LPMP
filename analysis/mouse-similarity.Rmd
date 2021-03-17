@@ -178,7 +178,7 @@ pheatmap(
 )
 ```
 
-### LHG vs LHF
+### LHF vs LHF
 
 Setup results table and iterator:
 
