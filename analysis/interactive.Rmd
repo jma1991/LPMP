@@ -78,11 +78,7 @@ rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$gene_id, rowData(sce
 # Define column data variables
 sce$Etv2 <- counts(sce)["Etv2", ] > 0
 sce$Kdr <- counts(sce)["Kdr", ] > 0
-sce$Runx1 <- counts(sce)["Runx1", ] > 0
-sce$Ednrb <- counts(sce)["Ednrb", ] > 0
 sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr
-sce$Etv2_AND_Kdr_AND_Runx1 <- sce$Etv2_AND_Kdr & sce$Runx1
-sce$Etv2_AND_Ednrb <- sce$Etv2 & sce$Ednrb
 
 # Define column data colours
 celltype_colours <- function(n) {
@@ -199,11 +195,7 @@ sce$source[sce$batch == "LPMP_EHF"] <- "LPMP_EHF"
 sce$source[sce$batch == "LPMP_LHF"] <- "LPMP_LHF"
 sce$Etv2 <- counts(sce)["Etv2", ] > 0
 sce$Kdr <- counts(sce)["Kdr", ] > 0
-sce$Runx1 <- counts(sce)["Runx1", ] > 0
-sce$Ednrb <- counts(sce)["Ednrb", ] > 0
 sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr
-sce$Etv2_AND_Kdr_AND_Runx1 <- sce$Etv2_AND_Kdr & sce$Runx1
-sce$Etv2_AND_Ednrb <- sce$Etv2 & sce$Ednrb
 
 # Define column data colours
 celltype_colours <- function(n) {
@@ -322,11 +314,7 @@ rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$Mouse_ID, rowData(sc
 # Define column data variables
 sce$Etv2 <- counts(sce)["Etv2", ] > 0
 sce$Kdr <- counts(sce)["Kdr", ] > 0
-sce$Runx1 <- counts(sce)["Runx1", ] > 0
-sce$Ednrb <- counts(sce)["Ednrb", ] > 0
 sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr
-sce$Etv2_AND_Kdr_AND_Runx1 <- sce$Etv2_AND_Kdr & sce$Runx1
-sce$Etv2_AND_Ednrb <- sce$Etv2 & sce$Ednrb
 
 # Define column data colours
 boolean_colours <- function(n) {
@@ -363,6 +351,76 @@ Allocate more memory to the iSEE application:
 
 ```{r}
 configureApp(appName = "LPMP_HUMAN", appDir = "shiny/human", size = "xxlarge")
+```
+
+### Chicken data
+
+Create iSEE directory for chicken integrated data:
+
+```{r}
+dir.create("shiny/chicken", showWarnings = FALSE, mode = "0755")
+```
+
+Copy chicken data to iSEE directory:
+
+```{r}
+file.copy("output/chicken-integration.rds", "shiny/chicken/data.rds", overwrite = TRUE)
+```
+
+Write code to iSEE application file:
+
+```{cat, engine.opts = list(file = "shiny/chicken/app.R"), class.source = "r"}
+# Load required packages
+library(iSEE)
+library(SingleCellExperiment)
+library(BiocSingular)
+
+# Load experiment object
+sce <- readRDS("data.rds")
+
+# Make feature names unique
+rownames(sce) <- scuttle::uniquifyFeatureNames(rowData(sce)$Mouse_ID, rowData(sce)$Mouse_Symbol)
+
+# Define column data variables
+sce$Etv2 <- counts(sce)["Etv2", ] > 0
+sce$Kdr <- counts(sce)["Kdr", ] > 0
+sce$Etv2_AND_Kdr <- sce$Etv2 & sce$Kdr
+
+# Define column data colours
+boolean_colours <- function(n) {
+  c(
+    "TRUE" = "#E15759",
+    "FALSE" = "#BAB0AC"
+  )
+}
+
+# Create colour map
+ecm <- ExperimentColorMap(
+  colData = list(
+    Etv2 = boolean_colours,
+    Kdr = boolean_colours,
+    Runx1 = boolean_colours,
+    Ednrb = boolean_colours,
+    Etv2_AND_Kdr = boolean_colours,
+    Etv2_AND_Kdr_AND_Runx1 = boolean_colours,
+    Etv2_AND_Ednrb = boolean_colours
+  )
+)
+
+# Create iSEE object
+iSEE(sce, appTitle = "LPMP_CHICKEN", colormap = ecm)
+```
+
+Deploy the iSEE application to the shiny server:
+
+```{r}
+deployApp(appDir = "shiny/chicken", appName = "LPMP_CHICKEN", appTitle = "LPMP_CHICKEN", launch.browser = FALSE, forceUpdate = TRUE)
+```
+
+Allocate more memory to the iSEE application:
+
+```{r}
+configureApp(appName = "LPMP_CHICKEN", appDir = "shiny/chicken", size = "xxlarge")
 ```
 
 ## Summary
