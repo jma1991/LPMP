@@ -21,6 +21,8 @@ navbar:
       menu:
         - text: "Lineage markers"
           href: lineage-markers.html
+        - text: "Secondary analysis"
+          href: secondary-analysis.html
     - text: "Mouse Atlas"
       menu:
         - text: "Mouse integration"
@@ -33,6 +35,10 @@ navbar:
       menu:
         - text: "Human integration"
           href: human-integration.html
+    - text: "Chicken Atlas"
+      menu:
+        - text: "Chicken integration"
+          href: chicken-integration.html
     - text: "Interactive"
       href: interactive.html
   right:
