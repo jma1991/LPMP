@@ -592,10 +592,8 @@ Plot heatmap of significant genes:
 plotHeatmap(
   object = sce[, !is.na(sce$slingPseudotime_1)],
   features = rownames(sig)[ind],
-  exprs_values = "logcounts",
+  exprs_values = "reconstructed",
   center = TRUE,
-  zlim = c(-4, +4),
-  symmetric = TRUE,
   colour_columns_by = "label",
   order_columns_by = "slingPseudotime_1",
 )
