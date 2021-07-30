@@ -109,7 +109,7 @@ plotHeatmap(
   features = ids,
   exprs_values = "reconstructed",
   center = TRUE,
-  symmetric = TRUE
+  colour_columns_by = "stage"
 )
 ```
 
@@ -139,7 +139,7 @@ plotHeatmap(
   features = unique(sig$gene2),
   exprs_values = "reconstructed",
   center = TRUE,
-  symmetric = TRUE,
+  colour_columns_by = "stage",
   show_rownames = FALSE
 )
 ```
@@ -211,18 +211,6 @@ set.seed(0101100010)
 mem <- clusterRows(reducedDim(sce, "PCA"), NNGraphParam(type = "jaccard", cluster.fun = "louvain"))
 ```
 
-Write cluster labels:
-
-```{r}
-dat <- data.frame(
-  colname = colnames(sce),
-  cluster = mem,
-  stringsAsFactors = FALSE
-)
-
-write.csv(dat, file = "output/secondary-clusters.csv")
-```
-
 Set column labels:
 
 ```{r}
@@ -237,7 +225,7 @@ plotHeatmap(
   features = ids,
   exprs_values = "reconstructed",
   center = TRUE,
-  colour_columns_by = "label",
+  colour_columns_by = c("label", "stage"),
   order_columns_by = "label"
 )
 ```
@@ -250,7 +238,7 @@ plotHeatmap(
   features = unique(sig$gene2),
   exprs_values = "reconstructed",
   center = TRUE,
-  colour_columns_by = "label",
+  colour_columns_by = c("label", "stage"),
   order_columns_by = "label",
   show_rownames = FALSE
 )
@@ -271,6 +259,7 @@ ggplot(dat, aes(PCA.1, PCA.2)) +
   geom_point(aes(colour = label)) + 
   scale_colour_tableau() + 
   labs(x = "PCA 1", y = "PCA 2", colour = "Label") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   coord_fixed()
 ```
@@ -284,7 +273,7 @@ ggplot(dat, aes(TSNE.1, TSNE.2)) +
   geom_point(aes(colour = label)) + 
   scale_colour_tableau() + 
   labs(x = "TSNE 1", y = "TSNE 2", colour = "Label") + 
-  coord_fixed() + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -298,7 +287,7 @@ ggplot(dat, aes(UMAP.1, UMAP.2)) +
   geom_point(aes(colour = label)) + 
   scale_colour_tableau() + 
   labs(x = "UMAP 1", y = "UMAP 2", colour = "Label") + 
-  coord_fixed() + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -312,6 +301,7 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
   geom_point(aes(colour = label)) + 
   scale_colour_tableau() + 
   labs(x = "DC 1", y = "DC 2", colour = "Label") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -420,6 +410,7 @@ ggplot(dat, aes(PCA.1, PCA.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_tableau() + 
   labs(x = "PCA 1", y = "PCA 2", colour = "Label") + 
+  facet_wrap(~ stage) + 
   coord_fixed() + 
   theme_bw()
 ```
@@ -432,6 +423,7 @@ ggplot(dat, aes(PCA.1, PCA.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_viridis_c() + 
   labs(x = "PCA 1", y = "PCA 2", colour = "Pseudotime") + 
+  facet_wrap(~ stage) + 
   coord_fixed() + 
   theme_bw()
 ```
@@ -462,6 +454,7 @@ ggplot(dat, aes(TSNE.1, TSNE.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_tableau() + 
   labs(x = "TSNE 1", y = "TSNE 2", colour = "Label") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -474,6 +467,7 @@ ggplot(dat, aes(TSNE.1, TSNE.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_viridis_c() + 
   labs(x = "TSNE 1", y = "TSNE 2", colour = "Pseudotime") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -504,6 +498,7 @@ ggplot(dat, aes(UMAP.1, UMAP.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_tableau() + 
   labs(x = "UMAP 1", y = "UMAP 2", colour = "Label") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -516,6 +511,7 @@ ggplot(dat, aes(UMAP.1, UMAP.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_viridis_c() + 
   labs(x = "UMAP 1", y = "UMAP 2", colour = "Pseudotime") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -546,6 +542,7 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_tableau() + 
   labs(x = "DiffusionMap 1", y = "DiffusionMap 2", colour = "Label") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -558,6 +555,7 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
   geom_path(data = cur.1, aes(Dim.1, Dim.2), arrow = arrow()) + 
   scale_colour_viridis_c() + 
   labs(x = "DiffusionMap 1", y = "DiffusionMap 2", colour = "Pseudotime") + 
+  facet_wrap(~ stage) + 
   theme_bw() + 
   theme(aspect.ratio = 1)
 ```
@@ -594,7 +592,7 @@ plotHeatmap(
   features = rownames(sig)[ind],
   exprs_values = "reconstructed",
   center = TRUE,
-  colour_columns_by = "label",
+  colour_columns_by = c("label", "stage"),
   order_columns_by = "slingPseudotime_1",
 )
 ```
