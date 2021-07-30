@@ -562,14 +562,26 @@ ggplot(dat, aes(DiffusionMap.1, DiffusionMap.2)) +
 
 #### Pseudotime
 
+Identify batch with cells greater than required degrees of freedom:
+
+```{r}
+tab <- table(sce$batch)
+
+use <- names(tab)[tab > 5]
+
+ind <- sce$batch %in% use
+```
+
 Test for differences along pseudotime:
 
 ```{r}
 set.seed(0010110101)
 
-mod <- model.matrix(~ sce$batch)
-
-res <- TSCAN::testPseudotime(sce, pseudotime = sce$slingPseudotime_1)
+res <- TSCAN::testPseudotime(
+  x = sce[, ind], 
+  pseudotime = sce$slingPseudotime_1, 
+  block = sce$batch[ind]
+)
 ```
 
 Subset by significance threshold:
