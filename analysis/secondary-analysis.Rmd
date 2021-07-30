@@ -156,6 +156,7 @@ rowSubset(sce, "HVG") <- hvg
 
 ## Dimensionality reduction
 
+Extract variance statistics:
 
 ```{r}
 dec <- metadata(sce)$combineVar
