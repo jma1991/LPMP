@@ -19,10 +19,10 @@ navbar:
           href: 04-marker-detection.html
     - text: "Analysis"
       menu:
-        - text: "Lineage markers"
-          href: lineage-markers.html
-        - text: "Secondary analysis"
-          href: secondary-analysis.html
+        - text: "Supervised analysis"
+          href: supervised-analysis.html
+        - text: "Supervised signaling"
+          href: supervised-signaling.html
     - text: "Mouse Atlas"
       menu:
         - text: "Mouse integration"
