@@ -77,15 +77,15 @@ Make cell names unique:
 colnames(sce) <- seq_len(ncol(sce))
 ```
 
-Split by batch annotation:
+Split by stage annotation:
 
 ```{r}
-sce <- splitByCol(sce, sce$batch)
+sce <- splitByCol(sce, sce$stage)
 ```
 
 ## Processing
 
-Create CellChat object for each batch:
+Create CellChat object for each stage:
 
 ```{r}
 fit <- lapply(sce, function(x) {
@@ -116,7 +116,7 @@ fit <- lapply(sce, function(x) {
 Merge CellChat objects:
 
 ```{r}
-all <- mergeCellChat(fit, add.names = c("Het", "Hom"))
+all <- mergeCellChat(fit, add.names = c("EHF", "LHF"))
 ```
 
 ## Results
@@ -139,7 +139,7 @@ for (i in ids) {
     comparison = c(1, 2),
     remove.isolate = FALSE,
     max.dataset = 1,
-    title.name = "Increased signaling in Het",
+    title.name = "Increased signaling in EHF",
     angle.x = 45
   )
   
@@ -150,7 +150,7 @@ for (i in ids) {
     comparison = c(1, 2),
     remove.isolate = FALSE,
     max.dataset = 2,
-    title.name = "Increased signaling in Hom",
+    title.name = "Increased signaling in LHF",
     angle.x = 45
   )
   
