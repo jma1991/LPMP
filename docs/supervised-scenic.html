@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="James Ashmore" />
 
 
-<title>About</title>
+<title>Supervised SCENIC</title>
 
 <script src="site_libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -29,6 +30,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -232,6 +236,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -239,6 +306,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -359,7 +436,9 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About</h1>
+<h1 class="title toc-ignore">Supervised SCENIC</h1>
+<h4 class="author">James Ashmore</h4>
+<h4 class="date">09 August, 2021</h4>
 
 </div>
 
@@ -387,7 +466,7 @@ $(document).ready(function () {
 <strong>Last updated:</strong> 2021-08-09
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>LPMP/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -409,6 +488,66 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
 <p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20201214code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20201214)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20201214code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20201214)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -459,7 +598,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/about.Rmd</code>) and HTML (<code>docs/about.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/supervised-scenic.Rmd</code>) and HTML (<code>docs/supervised-scenic.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -485,308 +624,19 @@ Message
 <tbody>
 <tr>
 <td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/a3f2cb69b2bbc6b7ba3926a999f6644ff59d685c/docs/about.html" target="_blank">a3f2cb6</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-08-02
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/5933de41ed865c05d5aed5f7b0492cf2fc4ac3ba/docs/about.html" target="_blank">5933de4</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-08-02
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/6884bcf8aa8135c2b5163531cda108896b2fe09f/docs/about.html" target="_blank">6884bcf</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-08-02
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/8c02686bfcf0bb1ddc6f914cc150f0f790cf687c/docs/about.html" target="_blank">8c02686</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-08-02
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/e43021667be5d3ea22a4ff1fb7d22a7203b8e952/docs/about.html" target="_blank">e430216</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-08-02
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/fb182f46d0ce1831f856e89afb0f9ac6f0647cda/docs/about.html" target="_blank">fb182f4</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-08-02
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/5df6a5cc03447f50ed695fb73b3405bf5a1c8be9/docs/about.html" target="_blank">5df6a5c</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-07-30
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/b9828c802130cca08a7bd0ffe50a41a071b2297b/docs/about.html" target="_blank">b9828c8</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-03-17
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/93f2f6aa5fc8abd886bfad0d21fb09779e94855d/docs/about.html" target="_blank">93f2f6a</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-03-17
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/dd34ae1254fc1286a11dc3f1bdfd0b6fa2a0ec5d/docs/about.html" target="_blank">dd34ae1</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-03-09
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/9f7149049b291787d8ba675239547f579f682f9e/docs/about.html" target="_blank">9f71490</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-02-17
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/f61e6cc3f62760eb119af2643c4a6ae67f059c8b/docs/about.html" target="_blank">f61e6cc</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-02-17
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/d03fa95e2cc2c62eeee7b82aa6cb418c0571bf99/docs/about.html" target="_blank">d03fa95</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-02-17
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/c203939cf66f5794f2d4ae8ed1031275e7c7ac33/docs/about.html" target="_blank">c203939</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-02-09
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/4c0a2d695996d03fc758c02b13cd8d0395a55364/docs/about.html" target="_blank">4c0a2d6</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-02-09
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jma1991/LPMP/6af703f2e77f77d647f6a704c8e64cfc40bbcde3/docs/about.html" target="_blank">6af703f</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2021-02-09
-</td>
-<td>
-Build
-</td>
-</tr>
-<tr>
-<td>
 Rmd
 </td>
 <td>
-<a href="https://github.com/jma1991/LPMP/blob/0d72a0ba37d9e6ac59d69ad35d6efc0619a5f66b/analysis/about.Rmd" target="_blank">0d72a0b</a>
+<a href="https://github.com/jma1991/LPMP/blob/c57063d603386cb6dfa51f483b18f4ef175c27f2/analysis/supervised-scenic.Rmd" target="_blank">c57063d</a>
 </td>
 <td>
 James Ashmore
 </td>
 <td>
-2021-02-08
+2021-08-09
 </td>
 <td>
 Build
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jma1991/LPMP/blob/8797b7d0b7fbe449680766b9bc4b3e4221e87784/analysis/about.Rmd" target="_blank">8797b7d</a>
-</td>
-<td>
-James Ashmore
-</td>
-<td>
-2020-12-14
-</td>
-<td>
-Start workflowr project.
 </td>
 </tr>
 </tbody>
@@ -796,8 +646,190 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<div id="section" class="section level2">
-<h2></h2>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this document we are going to analyse the output from the pySCENIC command-line software. SCENIC is a tool for single-cell regulatory network inference and clustering.</p>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>Define chunk options:</p>
+<pre class="r"><code>knitr::opts_chunk$set(
+  autodep    = TRUE,
+  cache      = TRUE,
+  cache.path = &quot;cache/supervised-scenic.Rmd/&quot;,
+  dev        = &quot;png&quot;,
+  error      = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align = &quot;center&quot;,
+  out.width = &#39;100%&#39;
+)</code></pre>
+<p>Load Bioconductor packages:</p>
+<pre class="r"><code>library(scuttle)</code></pre>
+<p>Load CRAN packages:</p>
+<pre class="r"><code>library(hues)
+library(pheatmap)
+library(viridis)</code></pre>
+<p>Define function to import AUCell matrix from text format:</p>
+<pre class="r"><code>importAUCfromText &lt;- function(fileName, rows=&quot;regulons&quot;, columns=&quot;cells&quot;, transpose=TRUE, newNames=NULL) {
+  aucMatrix &lt;- data.table::fread(fileName, drop=1)
+  cellNames &lt;- unname(unlist(data.table::fread(fileName, select=1, skip=1)))
+  if(transpose) aucMatrix &lt;- t(as.matrix(aucMatrix))
+  colnames(aucMatrix) &lt;- cellNames
+  if(!is.null(newNames)) rownames(aucMatrix) &lt;- unname(newNames[rownames(aucMatrix)])
+  names(dimnames(aucMatrix)) &lt;- c(rows, columns)
+  return(aucMatrix)
+}</code></pre>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>Read experiment object:</p>
+<pre class="r"><code>sce &lt;- readRDS(&quot;output/supervised-analysis.rds&quot;)</code></pre>
+<p>Make cell names unique:</p>
+<pre class="r"><code>N &lt;- ncol(sce)
+
+colnames(sce) &lt;- seq_len(N)</code></pre>
+<p>Import activity matrix:</p>
+<pre class="r"><code>auc &lt;- importAUCfromText(&quot;output/pyscenic/aucell.csv&quot;)</code></pre>
+<p>Rename experiment cells:</p>
+<pre class="r"><code>colnames(auc) &lt;- colnames(sce)</code></pre>
+<p>Order activity matrix by cluster:</p>
+<pre class="r"><code>auc &lt;- auc[, order(sce$label)]</code></pre>
+<p>Create heatmap colour palette:</p>
+<pre class="r"><code>stage.palette &lt;- c(&quot;EHF&quot; = &quot;#BAB0AC&quot;, &quot;LHF&quot; = &quot;#E15759&quot;)
+
+cluster.palette &lt;- iwanthue(n = nlevels(sce$label))
+
+cluster.palette &lt;- setNames(cluster.palette, levels(sce$label))
+
+celltype.palette &lt;- MouseGastrulationData::EmbryoCelltypeColours
+
+celltype.palette &lt;- subset(celltype.palette, names(celltype.palette) %in% sce$celltype)</code></pre>
+<p>Create heatmap annotation:</p>
+<pre class="r"><code>ann &lt;- list(
+  annotation_col = data.frame(
+    Cluster = sce$label, 
+    Celltype = sce$celltype, 
+    Stage = sce$stage, 
+    row.names = colnames(sce)
+  ),
+  annotation_colors = list(
+    Cluster = cluster.palette, 
+    Celltype = celltype.palette, 
+    Stage = stage.palette
+  )
+)</code></pre>
+<p>Plot matrix of AUC values for all regulons:</p>
+<pre class="r"><code>pheatmap(
+  mat = auc,
+  color = viridis(100),
+  cluster_cols = FALSE,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  border_color = NA,
+  show_rownames = FALSE,
+  show_colnames = FALSE,
+)</code></pre>
+<p><img src="figure/supervised-scenic.Rmd/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>Identify most variable regulons:</p>
+<pre class="r"><code>idx &lt;- order(rowVars(auc), decreasing = TRUE)[1:30]</code></pre>
+<p>Plot matrix of AUC values for outlier regulons:</p>
+<pre class="r"><code>pheatmap(
+  mat = auc[idx, ],
+  color = viridis(100),
+  cluster_cols = FALSE,
+  annotation_col = ann$annotation_col,
+  annotation_colors = ann$annotation_colors,
+  border_color = NA,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+)</code></pre>
+<p><img src="figure/supervised-scenic.Rmd/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div id="session" class="section level3">
+<h3>Session</h3>
+<p>Print session information:</p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.0.2 (2020-06-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Catalina 10.15.7
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRblas.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices datasets  utils    
+[8] methods   base     
+
+other attached packages:
+ [1] viridis_0.6.1               viridisLite_0.4.0          
+ [3] pheatmap_1.0.12             hues_0.2.0                 
+ [5] scuttle_1.0.4               SingleCellExperiment_1.12.0
+ [7] SummarizedExperiment_1.20.0 Biobase_2.50.0             
+ [9] GenomicRanges_1.42.0        GenomeInfoDb_1.26.7        
+[11] IRanges_2.24.1              S4Vectors_0.28.1           
+[13] BiocGenerics_0.36.1         MatrixGenerics_1.2.1       
+[15] matrixStats_0.59.0          workflowr_1.6.2            
+
+loaded via a namespace (and not attached):
+  [1] colorspace_2.0-2              ellipsis_0.3.2               
+  [3] rprojroot_2.0.2               bluster_1.0.0                
+  [5] XVector_0.30.0                BiocNeighbors_1.8.2          
+  [7] fs_1.5.0                      farver_2.1.0                 
+  [9] bit64_4.0.5                   AnnotationDbi_1.52.0         
+ [11] interactiveDisplayBase_1.28.0 fansi_0.5.0                  
+ [13] codetools_0.2-18              sparseMatrixStats_1.2.1      
+ [15] cachem_1.0.5                  knitr_1.33                   
+ [17] jsonlite_1.7.2                dbplyr_2.1.1                 
+ [19] shiny_1.6.0                   BiocManager_1.30.16          
+ [21] compiler_4.0.2                httr_1.4.2                   
+ [23] dqrng_0.3.0                   assertthat_0.2.1             
+ [25] Matrix_1.3-4                  fastmap_1.1.0                
+ [27] limma_3.46.0                  later_1.2.0                  
+ [29] BiocSingular_1.6.0            htmltools_0.5.1.1            
+ [31] tools_4.0.2                   rsvd_1.0.5                   
+ [33] igraph_1.2.6                  gtable_0.3.0                 
+ [35] glue_1.4.2                    GenomeInfoDbData_1.2.4       
+ [37] dplyr_1.0.7                   rappdirs_0.3.3               
+ [39] Rcpp_1.0.7                    MouseGastrulationData_1.4.0  
+ [41] jquerylib_0.1.4               vctrs_0.3.8                  
+ [43] ExperimentHub_1.16.1          DelayedMatrixStats_1.12.3    
+ [45] xfun_0.24                     stringr_1.4.0                
+ [47] beachmat_2.6.4                mime_0.11                    
+ [49] lifecycle_1.0.0               irlba_2.3.3                  
+ [51] renv_0.13.2                   statmod_1.4.36               
+ [53] AnnotationHub_2.22.1          edgeR_3.32.1                 
+ [55] zlibbioc_1.36.0               scales_1.1.1                 
+ [57] promises_1.2.0.1              RColorBrewer_1.1-2           
+ [59] yaml_2.2.1                    curl_4.3.2                   
+ [61] memoise_2.0.0                 gridExtra_2.3                
+ [63] ggplot2_3.3.5                 sass_0.4.0                   
+ [65] stringi_1.7.2                 RSQLite_2.2.7                
+ [67] highr_0.9                     BiocVersion_3.12.0           
+ [69] scran_1.18.7                  BiocParallel_1.24.1          
+ [71] rlang_0.4.11                  pkgconfig_2.0.3              
+ [73] bitops_1.0-7                  evaluate_0.14                
+ [75] lattice_0.20-44               purrr_0.3.4                  
+ [77] bit_4.0.4                     tidyselect_1.1.1             
+ [79] magrittr_2.0.1                R6_2.5.0                     
+ [81] generics_0.1.0                DelayedArray_0.16.3          
+ [83] DBI_1.1.1                     pillar_1.6.1                 
+ [85] whisker_0.4                   RCurl_1.98-1.3               
+ [87] tibble_3.1.2                  crayon_1.4.1                 
+ [89] utf8_1.2.1                    BiocFileCache_1.14.0         
+ [91] rmarkdown_2.9                 locfit_1.5-9.4               
+ [93] grid_4.0.2                    data.table_1.14.0            
+ [95] blob_1.2.1                    git2r_0.28.0                 
+ [97] digest_0.6.27                 xtable_1.8-4                 
+ [99] httpuv_1.6.1                  munsell_0.5.0                
+[101] bslib_0.2.5.1                </code></pre>
+</div>
 </div>
 
 
@@ -816,6 +848,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -848,6 +882,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
