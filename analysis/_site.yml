@@ -1,7 +1,7 @@
-name: "LPMP Analysis"
+name: "LPMPs"
 output_dir: "../docs"
 navbar:
-  title: "LPMP Analysis"
+  title: "LPMP"
   left:
     - text: "Home"
       href: index.html
@@ -23,14 +23,12 @@ navbar:
           href: supervised-analysis.html
         - text: "Supervised signaling"
           href: supervised-signaling.html
+        - text: "Supervised SCENIC"
+          href: supervised-scenic.html
     - text: "Mouse Atlas"
       menu:
         - text: "Mouse integration"
           href: mouse-integration.html
-        - text: "Mouse neighbors"
-          href: mouse-neighbors.html
-        - text: "Mouse similarity"
-          href: mouse-similarity.html
     - text: "Human Atlas"
       menu:
         - text: "Human integration"
