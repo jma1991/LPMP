@@ -401,52 +401,43 @@ Visualize the corrected PCA using a UMAP plot:
 ```{r fig.width = 12, fig.height = 12}
 dat <- makePerCellDF(mnn, use.coldata = TRUE, use.dimred = "UMAP")
 
-ggplot(dat, aes(UMAP.1, UMAP.2, colour = Sample)) + 
-  geom_point() + 
-  scale_colour_brewer(palette = "Set1") + 
+dat$batch[dat$batch == "chicken_st5_1"] <- "chicken_st5" # collapse replicates for plotting
+
+dat$batch[dat$batch == "chicken_st5_2"] <- "chicken_st5" # collapse replicates for plotting
+
+dat$Cluster[dat$batch != "chicken_st5"] <- NA # ignore mouse clusters
+
+ChickenClusterColours <- c(
+  "st5_0" = "#c0c0c0", # Epi
+  "st5_1" = "#20b2aa", # Meso
+  "st5_2" = "#ff6347", # Neural
+  "st5_3" = "#ffd700", # NMP
+  "st5_4" = "#a9a9a9", # Endo
+  "st5_5" = "#add8e6", # NC
+  "st5_6" = "#ab6ad5"  # Missing
+)
+
+ChickenClusterLabels <- c(
+  "st5_0" = "Epi",
+  "st5_1" = "Meso",
+  "st5_2" = "Neural",
+  "st5_3" = "NMP",
+  "st5_4" = "Endo",
+  "st5_5" = "NC",
+  "st5_6" = "Missing"
+)
+
+ggplot(dat, aes(UMAP.1, UMAP.2, colour = Cluster)) + 
+  geom_point(data = dat[, c("UMAP.1", "UMAP.2")], colour = "#f2f2f2") + 
+  geom_point(size = 2) + 
+  scale_colour_manual(values = ChickenClusterColours, labels = ChickenClusterLabels, na.value = "#000000") + 
   labs(x = "UMAP 1", y = "UMAP 2") + 
-  theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
-  theme(aspect.ratio = 1)
-```
-
-Visualize the corrected PCA using a UMAP plot:
-
-```{r fig.width = 12, fig.height = 12}
-ggplot() + 
-  geom_point(
-    data = subset(dat, Sample %in% c("st51", "st52")),
-    mapping = aes(UMAP.1, UMAP.2, colour = Cluster),
-  ) + 
-  geom_point(
-    data = subset(dat, Sample == "LPMP_EHF"),
-    mapping = aes(UMAP.1, UMAP.2),
-    colour = "black"
-  ) + 
-  geom_point(
-    data = subset(dat, Sample == "LPMP_LHF"),
-    mapping = aes(UMAP.1, UMAP.2),
-    colour = "maroon1"
-  ) + 
-  scale_colour_manual(
-    values = c(
-      "st5_0" = "#c0c0c0", # Epi
-      "st5_1" = "#20b2aa", # Meso
-      "st5_2" = "#ff6347", # Neural
-      "st5_3" = "#ffd700", # NMP
-      "st5_4" = "#a9a9a9", # Endo
-      "st5_5" = "#add8e6", # NC
-      "st5_6" = "#ffffff"  # Missing
-    ),
-    labels = c(
-      "st5_0" = "Epi", # Epi
-      "st5_1" = "Meso", # Meso
-      "st5_2" = "Neural", # Neural
-      "st5_3" = "NMP", # NMP
-      "st5_4" = "Endo", # Endo
-      "st5_5" = "NC", # NC
-      "st5_6" = "Missing"  # Missing      
+  facet_wrap(~ batch, labeller = labeller(
+    batch = c("chicken_st5" = "St5 (Chicken)",
+              "mouse_lpmp_ehf" = "LPMP-EHF (Mouse)",
+              "mouse_lpmp_lhf" = "LPMP-LHF (Mouse)"
     )
-  ) + 
+  )) + 
   theme_no_axes(base.theme = theme_bw(base_size = 16)) + 
   theme(aspect.ratio = 1)
 ```
